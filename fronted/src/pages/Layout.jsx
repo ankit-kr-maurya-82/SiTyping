@@ -11,7 +11,7 @@ const Layout = () => {
   const showSidebar = location.pathname === "/home";
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex  bg-gray-50">
       {/* Sidebar only on masonry-feed */}
       {showSidebar && <Sidebar />}
 

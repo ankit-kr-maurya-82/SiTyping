@@ -48,7 +48,7 @@ const Footer = () => {
             <Linkedin size={20} />
           </a> */}
           <a
-            href="https://www.instagram.com/_sicoding/"
+            href="https://www.instagram.com/ak_maurya_50/"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-pink-500 transition"

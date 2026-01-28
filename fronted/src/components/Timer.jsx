@@ -16,7 +16,7 @@ export default function Timer({ timeLeft }) {
         className={`${getColor()} ml-1`}
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 300 }}
+        transition={{ type: "spring", stiffness: 200 }}
       >
         {timeLeft}
       </motion.span>

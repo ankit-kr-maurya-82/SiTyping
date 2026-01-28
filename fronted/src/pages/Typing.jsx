@@ -30,7 +30,7 @@ const Typing = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
-  const totalTime = 60;
+  const totalTime = 30;
   const textContainerRef = useRef(null);
   const caretRef = useRef(null);
 

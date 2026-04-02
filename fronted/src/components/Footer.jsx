@@ -4,15 +4,15 @@ import { Twitter, Github, Linkedin, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#0e0e0e] text-gray-400 py-6  bottom-30 relative mt-auto">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+    <footer className="mt-auto w-full border-t border-white/5 bg-[#0e0e0e] py-6 text-gray-400">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-4 px-4 text-center sm:px-6 md:flex-row md:justify-between md:text-left lg:px-8">
         {/* Branding */}
-        <div className="text-white font-bold text-xl mb-4 md:mb-0">
+        <div className="text-xl font-bold text-white">
           SiTyping
         </div>
 
         {/* Links */}
-        <div className="flex gap-4 mb-4 md:mb-0">
+        <div className="flex flex-wrap items-center justify-center gap-4">
           <Link to="/" className="hover:text-yellow-400 transition">
             Home
           </Link>
@@ -22,7 +22,7 @@ const Footer = () => {
         </div>
 
         {/* Social Icons */}
-        <div className="flex gap-4 mb-4 md:mb-0">
+        <div className="flex min-h-5 gap-4">
           {/* <a
             href="https://twitter.com/"
             target="_blank"

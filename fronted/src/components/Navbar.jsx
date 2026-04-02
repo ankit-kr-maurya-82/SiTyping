@@ -15,46 +15,49 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="flex justify-between items-center px-6 py-4 bg-[#0e0e0e] text-white relative z-50 shadow-md">
-      {/* Logo */}
-      <div className="text-2xl font-extrabold tracking-wide">
-        <span className="text-yellow-400">Si</span>Typing
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-[#0e0e0e]/95 text-white shadow-md backdrop-blur">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <div className="shrink-0 text-xl font-extrabold tracking-wide sm:text-2xl">
+          <span className="text-yellow-400">Si</span>Typing
+        </div>
+
+        {/* Desktop Links */}
+        <nav className="hidden items-center space-x-3 md:flex lg:space-x-4">
+          {links.map((link) => (
+            <NavLink
+              key={link.name}
+              to={link.path}
+              className={({ isActive }) =>
+                `flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-all duration-200 ${
+                  isActive
+                    ? "bg-yellow-500/10 text-yellow-400"
+                    : "text-gray-300 hover:bg-gray-800"
+                }`
+              }
+            >
+              {link.icon}
+              {link.name}
+            </NavLink>
+          ))}
+
+          {/* Theme Toggle (optional) */}
+          {/* 
+          <button onClick={toggleTheme} className="p-2 rounded hover:bg-gray-800">
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          </button> 
+          */}
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="rounded-md p-2 text-gray-300 transition hover:text-yellow-400 md:hidden"
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
-
-      {/* Desktop Links */}
-      <nav className="hidden md:flex space-x-6 items-center">
-        {links.map((link) => (
-          <NavLink
-            key={link.name}
-            to={link.path}
-            className={({ isActive }) =>
-              `flex items-center gap-2 px-3 py-1 rounded-md transition-all duration-200 ${
-                isActive
-                  ? "bg-yellow-500/10 text-yellow-400"
-                  : "hover:bg-gray-800 text-gray-300"
-              }`
-            }
-          >
-            {link.icon}
-            {link.name}
-          </NavLink>
-        ))}
-
-        {/* Theme Toggle (optional) */}
-        {/* 
-        <button onClick={toggleTheme} className="p-2 rounded hover:bg-gray-800">
-          {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-        </button> 
-        */}
-      </nav>
-
-      {/* Mobile Menu Button */}
-      <button
-        className="md:hidden p-2 text-gray-300 hover:text-yellow-400 transition"
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -64,25 +67,27 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-16 left-0 w-full bg-gray-900 flex flex-col items-center md:hidden border-t border-gray-800"
+            className="absolute left-0 top-full w-full border-t border-gray-800 bg-gray-900/95 md:hidden"
           >
-            {links.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-3 w-full justify-center transition ${
-                    isActive
-                      ? "bg-yellow-500/10 text-yellow-400"
-                      : "hover:bg-gray-800 text-gray-300"
-                  }`
-                }
-              >
-                {link.icon}
-                {link.name}
-              </NavLink>
-            ))}
+            <div className="mx-auto flex w-full max-w-7xl flex-col px-4 py-2 sm:px-6">
+              {links.map((link) => (
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-base transition ${
+                      isActive
+                        ? "bg-yellow-500/10 text-yellow-400"
+                        : "text-gray-300 hover:bg-gray-800"
+                    }`
+                  }
+                >
+                  {link.icon}
+                  {link.name}
+                </NavLink>
+              ))}
+            </div>
 
             {/* Optional theme toggle */}
             {/* 

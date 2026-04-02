@@ -12,7 +12,7 @@ const sentenceBank = [
   "The five boxing wizards jump quickly.",
   "Crazy Fredrick bought many very exquisite opal jewels.",
   "We promptly judged antique ivory buckles for the next prize.",
-  "Amazingly few discotheques provide jukeboxes."
+  "Amazingly few discotheques provide jukeboxes.",
 ];
 
 // Get random sentences
@@ -34,7 +34,6 @@ const Typing = () => {
   const textContainerRef = useRef(null);
   const caretRef = useRef(null);
 
-  // Typing logic
   const handleKeyDown = (e) => {
     if (isFinished) return;
     if (!startTime) setStartTime(Date.now());
@@ -45,7 +44,6 @@ const Typing = () => {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
 
-      // Finish immediately if last word typed
       if (nextIndex >= text.length) {
         setIsFinished(true);
         setElapsedTime((Date.now() - startTime) / 1000);
@@ -58,7 +56,6 @@ const Typing = () => {
     }
   };
 
-  // Timer
   useEffect(() => {
     let timer;
     if (startTime && !isFinished) {
@@ -75,7 +72,6 @@ const Typing = () => {
     return () => clearInterval(timer);
   }, [startTime, isFinished]);
 
-  // Stats
   const correctWords = typedWords.filter((w, i) => w === text[i]).length;
   const accuracy =
     typedWords.length === 0
@@ -84,7 +80,6 @@ const Typing = () => {
   const wpm = Math.round((correctWords / (elapsedTime / 60)) || 0);
   const totalCharsTyped = typedWords.join("").length + currentWord.length;
 
-  // Restart
   const restartTest = () => {
     setText(getRandomSentences());
     setTypedWords([]);
@@ -100,7 +95,6 @@ const Typing = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   });
 
-  // Caret movement
   useEffect(() => {
     if (!textContainerRef.current || !caretRef.current) return;
     const container = textContainerRef.current;
@@ -112,96 +106,118 @@ const Typing = () => {
     caretRef.current.style.transform = `translate(${offsetLeft}px, ${offsetTop}px)`;
   }, [currentWord, currentIndex]);
 
-  // Per-character coloring
-  const renderWord = (word, typed) => {
-    return word.split("").map((letter, i) => {
+  const renderWord = (word, typed) =>
+    word.split("").map((letter, i) => {
       const typedChar = typed[i] || "";
       let color = "";
-      if (typedChar) color = typedChar === letter ? "text-green-500" : "text-red-500";
+      if (typedChar) {
+        color = typedChar === letter ? "text-green-500" : "text-red-500";
+      }
+
       return (
         <span key={i} className={`inline-block char-${i} ${color}`}>
           {letter}
         </span>
       );
     });
-  };
 
   return (
-    <div className="flex top-[-65px] flex-col items-center justify-center w-screen  bg-[#0e0e0e] text-gray-200 font-mono relative overflow-hidden p-4 h-[40rem]">
-      <h1 className="text-3xl font-semibold text-gray-400 mb-8 select-none">
-        Si Typing 
-      </h1>
+    <section className="relative w-full overflow-hidden rounded-3xl border border-white/10 bg-[#0e0e0e] px-4 py-8 text-gray-200 shadow-[0_24px_80px_rgba(0,0,0,0.35)] sm:px-6 sm:py-10 lg:px-10 lg:py-12">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-yellow-500/10 to-transparent" />
+      <div className="relative mx-auto flex min-h-[65svh] w-full max-w-5xl flex-col items-center justify-center">
+        <h1 className="mb-4 select-none text-center text-2xl font-semibold text-gray-300 sm:text-3xl lg:text-4xl">
+          Si Typing
+        </h1>
+        <p className="mb-8 max-w-2xl text-center text-sm leading-6 text-gray-500 sm:text-base">
+          Type through the prompt below. The test area now scales more cleanly
+          across phones, tablets, and larger screens.
+        </p>
 
-      {/* Progress bar */}
-      <div
-        className="absolute top-0 left-0 h-1 bg-yellow-500"
-        style={{ width: `${(elapsedTime / totalTime) * 100}%` }}
-      />
+        <div
+          className="absolute left-0 top-0 h-1 rounded-full bg-yellow-500"
+          style={{ width: `${(elapsedTime / totalTime) * 100}%` }}
+        />
 
-      {/* Typing text */}
-      <div
-        ref={textContainerRef}
-        className="w-full max-w-[90%] text-2xl leading-relaxed text-center select-none flex flex-wrap justify-center relative"
-      >
-        {text.map((word, i) => {
-          const isDone = i < currentIndex;
-          const isActive = i === currentIndex;
+        <div
+          ref={textContainerRef}
+          className="relative w-full rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-5 text-center text-lg leading-8 select-none sm:px-6 sm:py-6 sm:text-xl sm:leading-9 lg:px-8 lg:text-2xl lg:leading-10"
+        >
+          <div className="flex flex-wrap justify-center">
+            {text.map((word, i) => {
+              const isDone = i < currentIndex;
+              const isActive = i === currentIndex;
 
-          return (
-            <span key={i} className={`m-1 word-${i} relative`}>
-              {isDone
-                ? renderWord(word, typedWords[i] || "")
-                : isActive
-                ? renderWord(word, currentWord)
-                : <span className="text-gray-500">{word}</span>}
+              return (
+                <span key={i} className={`word-${i} relative m-1`}>
+                  {isDone
+                    ? renderWord(word, typedWords[i] || "")
+                    : isActive
+                      ? renderWord(word, currentWord)
+                      : <span className="text-gray-500">{word}</span>}
+                </span>
+              );
+            })}
+          </div>
+
+          {!isFinished && (
+            <motion.span
+              ref={caretRef}
+              className="pointer-events-none absolute h-[1em] w-[2px] animate-blink bg-yellow-400"
+              style={{ top: 0, left: 0 }}
+              layout
+            />
+          )}
+        </div>
+
+        <div className="mt-8 grid w-full max-w-3xl grid-cols-2 gap-3 text-sm text-gray-400 sm:mt-10 sm:grid-cols-4">
+          <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-center">
+            <span className="block text-lg font-bold text-white sm:text-xl">
+              {wpm}
             </span>
-          );
-        })}
+            WPM
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-center">
+            <span className="block text-lg font-bold text-white sm:text-xl">
+              {accuracy}%
+            </span>
+            Accuracy
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-center">
+            <span className="block text-lg font-bold text-white sm:text-xl">
+              {Math.max(totalTime - Math.floor(elapsedTime), 0)}s
+            </span>
+            Time
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 text-center">
+            <span className="block text-lg font-bold text-white sm:text-xl">
+              {totalCharsTyped}
+            </span>
+            Chars
+          </div>
+        </div>
 
-        {/* Caret */}
-        {!isFinished && (
-          <motion.span
-            ref={caretRef}
-            className="absolute w-[2px] bg-yellow-400 animate-blink h-[1em] pointer-events-none"
-            style={{ top: 0, left: 0 }}
-            layout
-          />
+        {isFinished && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-3xl bg-black/70 p-4 text-center backdrop-blur-sm">
+            <h2 className="mb-4 text-3xl font-bold text-yellow-400 sm:text-4xl">
+              Test Finished!
+            </h2>
+            <p className="mb-6 max-w-md text-sm leading-6 text-gray-300 sm:text-base">
+              <span className="font-semibold text-white">{wpm}</span> WPM |{" "}
+              <span className="font-semibold text-white">{accuracy}%</span>{" "}
+              Accuracy |{" "}
+              <span className="font-semibold text-white">{totalCharsTyped}</span>{" "}
+              Chars
+            </p>
+            <button
+              onClick={restartTest}
+              className="rounded-lg bg-yellow-500 px-6 py-2 font-semibold text-black transition hover:bg-yellow-600"
+            >
+              Restart
+            </button>
+          </div>
         )}
       </div>
 
-      {/* Stats */}
-      <div className="mt-10 flex gap-10 text-gray-400 text-sm">
-        <div>
-          <span className="text-white font-bold text-lg">{wpm}</span> WPM
-        </div>
-        <div>
-          <span className="text-white font-bold text-lg">{accuracy}%</span> Accuracy
-        </div>
-        <div>
-          <span className="text-white font-bold text-lg">{Math.max(totalTime - Math.floor(elapsedTime), 0)}s</span> Time
-        </div>
-        <div>
-          <span className="text-white font-bold text-lg">{totalCharsTyped}</span> Chars
-        </div>
-      </div>
-
-      {/* End overlay */}
-      {isFinished && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Test Finished!</h2>
-          <p className="text-gray-300 mb-6">
-            <span className="text-white font-semibold">{wpm}</span> WPM · <span className="text-white font-semibold">{accuracy}%</span> Accuracy · <span className="text-white font-semibold">{totalCharsTyped}</span> Chars
-          </p>
-          <button
-            onClick={restartTest}
-            className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-6 rounded-lg transition"
-          >
-            Restart
-          </button>
-        </div>
-      )}
-
-      {/* Caret animation */}
       <style>
         {`
           @keyframes blink {
@@ -213,7 +229,7 @@ const Typing = () => {
           }
         `}
       </style>
-    </div>
+    </section>
   );
 };
 

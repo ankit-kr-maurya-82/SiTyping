@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import AdBanner from "../components/AdBanner";
 
 const sentenceBank = [
   "The quick brown fox jumps over the lazy dog.",
@@ -238,7 +239,10 @@ const Typing = () => {
             Chars
           </div>
         </div>
-        
+
+        <div className="mt-6 w-full max-w-3xl">
+          <AdBanner />
+        </div>
 
         {isFinished && (
           <div className="absolute inset-0 flex flex-col items-center justify-center rounded-3xl bg-black/70 p-4 text-center backdrop-blur-sm">

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export default function AdBanner({
   adClient = "ca-pub-7461393463863515",
-  adSlot = "1234567890",
+  adSlot = "3999064762",
   adFormat = "auto",
   fullWidthResponsive = true,
   className = "",

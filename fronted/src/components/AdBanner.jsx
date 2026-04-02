@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 
-const AD_CLIENT = "ca-pub-7461393463863515";
-const AD_SLOT = "3999064762";
+const AD_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT;
+const AD_SLOT = import.meta.env.VITE_ADSENSE_TYPING_SLOT;
 const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${AD_CLIENT}`;
 
 const AdBanner = () => {
   useEffect(() => {
+    if (!AD_CLIENT || !AD_SLOT) {
+      return;
+    }
+
     const existingScript = document.querySelector(
       `script[src="${ADSENSE_SRC}"]`
     );
@@ -24,6 +28,10 @@ const AdBanner = () => {
       console.error("AdSense error:", error);
     }
   }, []);
+
+  if (!AD_CLIENT || !AD_SLOT) {
+    return null;
+  }
 
   return (
     <section className="mx-auto my-6 w-full max-w-5xl px-4">

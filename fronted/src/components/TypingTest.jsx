@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import AdBanner from "./AdBanner";
 
 export default function TypingTest() {
   const [text] = useState(
@@ -137,8 +138,8 @@ export default function TypingTest() {
           >
             Restart
           </button>
+          <AdBanner/>
         </div>
-        
       )}
     </div>
   );

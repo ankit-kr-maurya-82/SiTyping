@@ -20,15 +20,31 @@ const AdBanner = ({
 
   useEffect(() => {
     if (!resolvedClient || !resolvedSlot || !adRef.current) {
+      console.warn("AdBanner: missing config", {
+        slot,
+        resolvedClient,
+        resolvedSlot,
+      });
       return;
     }
 
     if (adRef.current.dataset.adStatus) {
+      console.info("AdBanner: already initialized", {
+        slot,
+        adStatus: adRef.current.dataset.adStatus,
+      });
       return;
     }
 
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
+
+      window.setTimeout(() => {
+        console.info("AdBanner: slot status", {
+          slot,
+          adStatus: adRef.current?.dataset.adStatus || "not-set",
+        });
+      }, 1200);
     } catch (error) {
       console.error("AdSense error:", error);
     }

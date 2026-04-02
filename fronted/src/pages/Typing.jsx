@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import AdBanner from "../components/AdBanner";
 
+const TYPING_AD_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT || "";
+const TYPING_AD_SLOT = import.meta.env.VITE_ADSENSE_TYPING_SLOT || "";
+
 const sentenceBank = [
   "The quick brown fox jumps over the lazy dog.",
   "Pack my box with five dozen liquor jugs.",
@@ -241,7 +244,7 @@ const Typing = () => {
         </div>
 
         <div className="mt-6 w-full max-w-3xl">
-          <AdBanner />
+          <AdBanner adClient={TYPING_AD_CLIENT} adSlot={TYPING_AD_SLOT} />
         </div>
 
         {isFinished && (

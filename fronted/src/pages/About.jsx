@@ -2,6 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import AdBanner from "../components/AdBanner";
 
+const ABOUT_AD_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT || "";
+const ABOUT_AD_SLOT = import.meta.env.VITE_ADSENSE_ABOUT_SLOT || "";
+
 const highlights = [
   {
     title: "Real-time feedback",
@@ -104,7 +107,7 @@ export default function About() {
           transition={{ delay: 0.6, duration: 0.5 }}
           className="mx-auto w-full max-w-3xl"
         >
-          <AdBanner />
+          <AdBanner adClient={ABOUT_AD_CLIENT} adSlot={ABOUT_AD_SLOT} />
         </motion.div>
 
         <motion.div

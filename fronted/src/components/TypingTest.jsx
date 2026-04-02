@@ -138,6 +138,7 @@ export default function TypingTest() {
             Restart
           </button>
         </div>
+        
       )}
     </div>
   );

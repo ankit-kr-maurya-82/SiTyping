@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import AdBanner from "../components/AdBanner";
 
 const highlights = [
   {
@@ -95,6 +96,15 @@ export default function About() {
               <p className="leading-7 text-gray-400">{item.desc}</p>
             </div>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="mx-auto w-full max-w-3xl"
+        >
+          <AdBanner />
         </motion.div>
 
         <motion.div

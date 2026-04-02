@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-// Sentence bank
 const sentenceBank = [
   "The quick brown fox jumps over the lazy dog.",
   "Pack my box with five dozen liquor jugs.",
@@ -15,7 +14,6 @@ const sentenceBank = [
   "Amazingly few discotheques provide jukeboxes.",
 ];
 
-// Get random sentences
 const getRandomSentences = (count = 5) => {
   const shuffled = [...sentenceBank].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count).join(" ").split(/\s+/);
@@ -29,32 +27,12 @@ const Typing = () => {
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const totalTime = 30;
   const textContainerRef = useRef(null);
   const caretRef = useRef(null);
-
-  const handleKeyDown = (e) => {
-    if (isFinished) return;
-    if (!startTime) setStartTime(Date.now());
-
-    if (e.key === " ") {
-      setTypedWords((prev) => [...prev, currentWord]);
-      setCurrentWord("");
-      const nextIndex = currentIndex + 1;
-      setCurrentIndex(nextIndex);
-
-      if (nextIndex >= text.length) {
-        setIsFinished(true);
-        setElapsedTime((Date.now() - startTime) / 1000);
-      }
-      e.preventDefault();
-    } else if (e.key === "Backspace") {
-      setCurrentWord((prev) => prev.slice(0, -1));
-    } else if (e.key.length === 1) {
-      setCurrentWord((prev) => prev + e.key);
-    }
-  };
+  const inputRef = useRef(null);
 
   useEffect(() => {
     let timer;
@@ -72,6 +50,16 @@ const Typing = () => {
     return () => clearInterval(timer);
   }, [startTime, isFinished]);
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (isFinished) {
+      inputRef.current?.blur();
+    }
+  }, [isFinished]);
+
   const correctWords = typedWords.filter((w, i) => w === text[i]).length;
   const accuracy =
     typedWords.length === 0
@@ -79,6 +67,12 @@ const Typing = () => {
       : Math.round((correctWords / typedWords.length) * 100);
   const wpm = Math.round((correctWords / (elapsedTime / 60)) || 0);
   const totalCharsTyped = typedWords.join("").length + currentWord.length;
+
+  const focusInput = () => {
+    if (!isFinished) {
+      inputRef.current?.focus();
+    }
+  };
 
   const restartTest = () => {
     setText(getRandomSentences());
@@ -88,12 +82,46 @@ const Typing = () => {
     setStartTime(null);
     setElapsedTime(0);
     setIsFinished(false);
+    setInputValue("");
+
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
   };
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  });
+  const handleInputChange = (e) => {
+    if (isFinished) return;
+
+    const nextValue = e.target.value.replace(/\n/g, " ");
+    if (!startTime && nextValue.trim().length > 0) {
+      setStartTime(Date.now());
+    }
+
+    const endsWithSpace = /\s$/.test(nextValue);
+    const trimmedValue = nextValue.trim();
+    const words = trimmedValue ? trimmedValue.split(/\s+/) : [];
+    const nextTypedWords = endsWithSpace ? words : words.slice(0, -1);
+    const nextCurrentWord = endsWithSpace ? "" : words[words.length - 1] || "";
+    const nextIndex = nextTypedWords.length;
+
+    setInputValue(nextValue);
+    setTypedWords(nextTypedWords);
+    setCurrentWord(nextCurrentWord);
+    setCurrentIndex(nextIndex);
+
+    if (nextIndex >= text.length) {
+      setIsFinished(true);
+      if (startTime) {
+        setElapsedTime((Date.now() - startTime) / 1000);
+      }
+    }
+  };
+
+  const handleInputKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     if (!textContainerRef.current || !caretRef.current) return;
@@ -129,8 +157,7 @@ const Typing = () => {
           Si Typing
         </h1>
         <p className="mb-8 max-w-2xl text-center text-sm leading-6 text-gray-500 sm:text-base">
-          Type through the prompt below. The test area now scales more cleanly
-          across phones, tablets, and larger screens.
+          Tap the text area and start typing. Mobile keyboards are supported now.
         </p>
 
         <div
@@ -140,8 +167,24 @@ const Typing = () => {
 
         <div
           ref={textContainerRef}
-          className="relative w-full rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-5 text-center text-lg leading-8 select-none sm:px-6 sm:py-6 sm:text-xl sm:leading-9 lg:px-8 lg:text-2xl lg:leading-10"
+          onClick={focusInput}
+          className="relative w-full cursor-text rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-5 text-center text-lg leading-8 select-none sm:px-6 sm:py-6 sm:text-xl sm:leading-9 lg:px-8 lg:text-2xl lg:leading-10"
         >
+          <input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleInputKeyDown}
+            autoCapitalize="none"
+            autoCorrect="off"
+            autoComplete="off"
+            spellCheck={false}
+            inputMode="text"
+            className="absolute inset-0 h-full w-full opacity-0"
+            aria-label="Typing input"
+          />
+
           <div className="flex flex-wrap justify-center">
             {text.map((word, i) => {
               const isDone = i < currentIndex;

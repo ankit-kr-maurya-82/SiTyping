@@ -73,6 +73,7 @@ const AdBanner = ({
   format = "auto",
   responsive = true,
 }) => {
+  const containerRef = useRef(null);
   const adRef = useRef(null);
   const hasRequestedAdRef = useRef(false);
   const resolvedClient = adClient || AD_CLIENT;
@@ -94,12 +95,13 @@ const AdBanner = ({
 
     let cancelled = false;
     const adNode = adRef.current;
+    const containerNode = containerRef.current;
     const requestAdWhenReady = () => {
       if (cancelled || hasRequestedAdRef.current || !adRef.current) {
         return;
       }
 
-      const width = adRef.current.offsetWidth;
+      const width = containerRef.current?.offsetWidth || 0;
       if (width <= 0) {
         console.info(`${DEBUG_PREFIX} waiting for width`, { slot, width });
         return;
@@ -120,8 +122,8 @@ const AdBanner = ({
           slot,
           resolvedClient,
           resolvedSlot,
-          width: adRef.current.offsetWidth,
-          height: adRef.current.offsetHeight,
+          width,
+          height: containerRef.current?.offsetHeight || 0,
           scriptPresent: Boolean(
             document.querySelector(
               'script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]',
@@ -135,8 +137,8 @@ const AdBanner = ({
           console.info(`${DEBUG_PREFIX} slot status`, {
             slot,
             adStatus: adRef.current?.dataset.adStatus || "not-set",
-            width: adRef.current?.offsetWidth || 0,
-            height: adRef.current?.offsetHeight || 0,
+            width: containerRef.current?.offsetWidth || 0,
+            height: containerRef.current?.offsetHeight || 0,
           });
 
           if (!adRef.current?.dataset.adStatus) {
@@ -157,8 +159,8 @@ const AdBanner = ({
       console.info(`${DEBUG_PREFIX} mutation observed`, {
         slot,
         adStatus: adNode.dataset.adStatus || "not-set",
-        width: adNode.offsetWidth,
-        height: adNode.offsetHeight,
+        width: containerNode?.offsetWidth || 0,
+        height: containerNode?.offsetHeight || 0,
       });
     });
 
@@ -171,7 +173,9 @@ const AdBanner = ({
       requestAdWhenReady();
     });
 
-    resizeObserver.observe(adNode);
+    if (containerNode) {
+      resizeObserver.observe(containerNode);
+    }
 
     const loadAd = async () => {
       const scriptLoaded = await ensureAdSenseScript(resolvedClient);
@@ -200,12 +204,16 @@ const AdBanner = ({
   }
 
   return (
-    <section className={`mx-auto my-6 w-full max-w-5xl px-4 ${className}`.trim()}>
+    <section
+      ref={containerRef}
+      className={`mx-auto my-6 w-full max-w-5xl px-4 ${className}`.trim()}
+      style={{ minHeight: "90px" }}
+    >
       <ins
         key={`${resolvedClient}-${resolvedSlot}`}
         ref={adRef}
         className="adsbygoogle block"
-        style={{ display: "block", width: "100%", minHeight: "90px" }}
+        style={{ display: "block", width: "100%", minWidth: "250px", minHeight: "90px" }}
         data-ad-client={resolvedClient}
         data-ad-slot={resolvedSlot}
         data-ad-format={format}

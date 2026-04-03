@@ -94,27 +94,14 @@ const AdBanner = ({
 
     let cancelled = false;
     const adNode = adRef.current;
-    const observer = new MutationObserver(() => {
-      console.info(`${DEBUG_PREFIX} mutation observed`, {
-        slot,
-        adStatus: adNode.dataset.adStatus || "not-set",
-        width: adNode.offsetWidth,
-        height: adNode.offsetHeight,
-      });
-    });
+    const requestAdWhenReady = () => {
+      if (cancelled || hasRequestedAdRef.current || !adRef.current) {
+        return;
+      }
 
-    observer.observe(adNode, {
-      attributes: true,
-      attributeFilter: ["data-ad-status", "style", "class"],
-    });
-
-    const loadAd = async () => {
-      const scriptLoaded = await ensureAdSenseScript(resolvedClient);
-      if (!scriptLoaded || cancelled || !adRef.current) {
-        console.warn(`${DEBUG_PREFIX} AdSense script unavailable`, {
-          slot,
-          resolvedClient,
-        });
+      const width = adRef.current.offsetWidth;
+      if (width <= 0) {
+        console.info(`${DEBUG_PREFIX} waiting for width`, { slot, width });
         return;
       }
 
@@ -166,11 +153,45 @@ const AdBanner = ({
       }
     };
 
+    const observer = new MutationObserver(() => {
+      console.info(`${DEBUG_PREFIX} mutation observed`, {
+        slot,
+        adStatus: adNode.dataset.adStatus || "not-set",
+        width: adNode.offsetWidth,
+        height: adNode.offsetHeight,
+      });
+    });
+
+    observer.observe(adNode, {
+      attributes: true,
+      attributeFilter: ["data-ad-status", "style", "class"],
+    });
+
+    const resizeObserver = new ResizeObserver(() => {
+      requestAdWhenReady();
+    });
+
+    resizeObserver.observe(adNode);
+
+    const loadAd = async () => {
+      const scriptLoaded = await ensureAdSenseScript(resolvedClient);
+      if (!scriptLoaded || cancelled || !adRef.current) {
+        console.warn(`${DEBUG_PREFIX} AdSense script unavailable`, {
+          slot,
+          resolvedClient,
+        });
+        return;
+      }
+
+      requestAdWhenReady();
+    };
+
     loadAd();
 
     return () => {
       cancelled = true;
       observer.disconnect();
+      resizeObserver.disconnect();
     };
   }, [resolvedClient, resolvedSlot, slot]);
 
@@ -184,7 +205,7 @@ const AdBanner = ({
         key={`${resolvedClient}-${resolvedSlot}`}
         ref={adRef}
         className="adsbygoogle block"
-        style={{ display: "block" }}
+        style={{ display: "block", width: "100%", minHeight: "90px" }}
         data-ad-client={resolvedClient}
         data-ad-slot={resolvedSlot}
         data-ad-format={format}

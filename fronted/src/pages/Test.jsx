@@ -3,7 +3,7 @@ import Timer from "../components/Timer";
 import Seo from "../components/Seo";
 
 export default function Test() {
-  const siteUrl = import.meta.env.VITE_SITE_URL || "https://si-typing.vercel.app";
+  const siteUrl = import.meta.env.VITE_SITE_URL || "https://sityping.vercel.app";
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-6 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">

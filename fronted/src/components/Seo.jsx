@@ -4,7 +4,7 @@ const DEFAULT_TITLE = "SiTyping | Free Typing Practice";
 const DEFAULT_DESCRIPTION =
   "SiTyping is a responsive typing practice website with free speed tests, accuracy tracking, and helpful public information pages.";
 const DEFAULT_SITE_URL =
-  import.meta.env.VITE_SITE_URL || "https://si-typing.vercel.app";
+  import.meta.env.VITE_SITE_URL || "https://sityping.vercel.app";
 const DEFAULT_OG_IMAGE = import.meta.env.VITE_OG_IMAGE || "";
 
 const upsertMeta = (selector, attributes) => {

@@ -29,7 +29,7 @@ export default function About() {
           "@context": "https://schema.org",
           "@type": "AboutPage",
           name: "About SiTyping",
-          url: "https://si-typing.vercel.app/about",
+          url: "https://sityping.vercel.app/about",
           description:
             "Information about SiTyping, a typing practice website focused on speed, accuracy, and responsive design.",
         }}

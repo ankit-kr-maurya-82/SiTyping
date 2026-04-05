@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://si-typing.vercel.app/sitemap.xml
+Sitemap: https://sityping.vercel.app/sitemap.xml

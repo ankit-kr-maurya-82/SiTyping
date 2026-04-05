@@ -26,7 +26,7 @@ const contactCards = [
 ];
 
 export default function Contact() {
-  const siteUrl = import.meta.env.VITE_SITE_URL || "https://si-typing.vercel.app";
+  const siteUrl = import.meta.env.VITE_SITE_URL || "https://sityping.vercel.app";
 
   return (
     <section className="bg-gray-950 px-4 py-10 text-gray-300 sm:px-6 lg:px-8">

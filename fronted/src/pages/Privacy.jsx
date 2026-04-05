@@ -40,7 +40,7 @@ export default function Privacy() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           name: "SiTyping Privacy Policy",
-          url: "https://si-typing.vercel.app/privacy",
+          url: "https://sityping.vercel.app/privacy",
           description:
             "Privacy policy page for SiTyping covering cookies, advertising providers, and third-party services.",
         }}

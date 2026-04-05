@@ -7,12 +7,12 @@
     <loc>https://si-typing.vercel.app/about</loc>
   </url>
   <url>
+    <loc>https://si-typing.vercel.app/contact</loc>
+  </url>
+  <url>
+    <loc>https://si-typing.vercel.app/privacy</loc>
+  </url>
+  <url>
     <loc>https://si-typing.vercel.app/pro</loc>
-  </url>
-  <url>
-    <loc>https://si-typing.vercel.app/test</loc>
-  </url>
-  <url>
-    <loc>https://si-typing.vercel.app/typing</loc>
   </url>
 </urlset>

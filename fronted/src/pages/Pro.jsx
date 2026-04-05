@@ -16,6 +16,7 @@ import {
   Upload,
   Zap,
 } from "lucide-react";
+import Seo from "../components/Seo";
 
 const plans = [
   {
@@ -170,6 +171,11 @@ const demoCards = [
 export default function Pro() {
   return (
     <section className="bg-gray-950 px-4 py-10 text-gray-200 sm:px-6 lg:px-8">
+      <Seo
+        title="SiTyping Pro"
+        description="Explore the premium roadmap for SiTyping, including ad-free practice, analytics, custom tests, and progress tools."
+        path="/pro"
+      />
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10">
         <motion.div
           initial={{ opacity: 0, y: -18 }}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Home, Terminal, Info, Crown } from "lucide-react";
+import { Menu, X, Home, Info, Crown, Mail, Shield } from "lucide-react";
 // import { useTheme } from "../context/ThemeContext"; // optional
 
 export default function Navbar() {
@@ -12,6 +12,8 @@ export default function Navbar() {
     { name: "Home", path: "/", icon: <Home size={18} /> },
     // { name: "Type", path: "/type", icon: <Terminal size={18} /> },
     { name: "About", path: "/about", icon: <Info size={18} /> },
+    { name: "Contact", path: "/contact", icon: <Mail size={18} /> },
+    { name: "Privacy", path: "/privacy", icon: <Shield size={18} /> },
     { name: "Pro", path: "/pro", icon: <Crown size={18} /> },
   ];
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import AdBanner from "../components/AdBanner";
+import Seo from "../components/Seo";
 
 const highlights = [
   {
@@ -20,6 +21,11 @@ const highlights = [
 export default function About() {
   return (
     <section className="bg-gray-950 px-4 py-10 text-gray-300 sm:px-6 lg:px-8">
+      <Seo
+        title="About SiTyping"
+        description="Learn what SiTyping is, who it serves, and how the typing practice platform is built for focused, responsive learning."
+        path="/about"
+      />
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

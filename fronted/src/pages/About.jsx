@@ -25,6 +25,14 @@ export default function About() {
         title="About SiTyping"
         description="Learn what SiTyping is, who it serves, and how the typing practice platform is built for focused, responsive learning."
         path="/about"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: "About SiTyping",
+          url: "https://si-typing.vercel.app/about",
+          description:
+            "Information about SiTyping, a typing practice website focused on speed, accuracy, and responsive design.",
+        }}
       />
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
         <motion.div

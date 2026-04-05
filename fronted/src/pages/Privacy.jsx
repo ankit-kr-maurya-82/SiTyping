@@ -36,6 +36,14 @@ export default function Privacy() {
         title="Privacy Policy"
         description="Read the SiTyping privacy policy, including how the site uses advertising providers, cookies, and third-party services."
         path="/privacy"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: "SiTyping Privacy Policy",
+          url: "https://si-typing.vercel.app/privacy",
+          description:
+            "Privacy policy page for SiTyping covering cookies, advertising providers, and third-party services.",
+        }}
       />
 
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">

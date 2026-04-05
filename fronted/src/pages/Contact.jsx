@@ -26,12 +26,22 @@ const contactCards = [
 ];
 
 export default function Contact() {
+  const siteUrl = import.meta.env.VITE_SITE_URL || "https://si-typing.vercel.app";
+
   return (
     <section className="bg-gray-950 px-4 py-10 text-gray-300 sm:px-6 lg:px-8">
       <Seo
         title="Contact SiTyping"
         description="Find the SiTyping contact page for support, policy communication, and general questions about the website."
         path="/contact"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          name: "Contact SiTyping",
+          url: `${siteUrl}/contact`,
+          description:
+            "Contact page for SiTyping support, policy communication, and general website questions.",
+        }}
       />
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
